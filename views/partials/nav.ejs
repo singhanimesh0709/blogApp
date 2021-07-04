@@ -1,0 +1,17 @@
+<nav>
+    <div class="site-title">
+        <!--    
+<% const nmae = 'Animesh' %> ---this is a EJS element, where we define nmae, but then we cant output it like this,we can just use 
+it now on the server,for future use of this nmae var -->
+      <!--
+            <p><%= nmae %></p>----- now this will output nmae's value on the browser website, so we can ue output EJS vars, but wil  still have to 
+        encapsulate them in a HTML tag, here we used <p> tag  -->
+        <a href="/"><h1>Blog Ninja</h1></a>
+        <p>A Net Ninja Site</p>
+    </div>
+    <ul>
+        <li><a href="/">Blogs</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/blogs/create">New blog</a></li>
+    </ul>
+</nav>

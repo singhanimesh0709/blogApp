@@ -1,0 +1,45 @@
+<html lang="en">
+    <%- include('./partials/head.ejs') %>
+    <body>
+        <%-  include('./partials/nav.ejs') %>
+       
+       
+        <div class ='details content'>
+            <h2><%= blog.title %></h2>
+            <div class=' content'>
+                <p><%= blog.body %></p>
+            </div>
+           <a class ='delete' data-doc='<%= blog._id %>'>
+               <img src="/delete_black_24dp.svg" alt=" Delete Icon">
+           </a> 
+            <!-- yha pe hum kya kar rhe hai ki delete link tag click karte hi jis blog ka delete tha ussse apne 
+                custon tag doc me uski id  save kar rhe haai. bcoz we had access to blog , therefore blog._id is possible
+            ** so when we click on delete , we can grab blog._id and using some javascript code and then send a delete request by a fetch API.-->
+        </div>
+        <%-  include('./partials/footer.ejs') %>
+        <script>
+             /* now after creating button(link) and adding css, we'll need to send request to server, but that is done by javascript, which is not the 
+                one being run in server but the one being run in the frontend, that is in the brwser. that we'll do adding <script> tag in our details.ejs
+            ** as we know any javascript inside script tag runs on the browser, and not on the server.(front-end basics) */
+         const trashcan = document.querySelector('a.delete')// this method gets the whole element with class 'delete' in the <a> tag. so isse kya hua ki trashcan became a refference to delete link. 
+         trashcan.addEventListener('click',(e)=>{
+           //e is the event object, so we took that as a parameter  
+           // now as button is clicked we need to send a delete request to the server, and we'll use fetch API for that.
+           const endpoint = `/blogs/${trashcan.dataset.doc}`; // template string with back tick
+           
+           // so we wanna send the delete request to the endpoint. and  we do that by help of a fetch API
+           fetch(endpoint,{
+               method: 'DELETE'
+           })// 1st parameter = where to send, 2nd parameter= option parameter, so as to define what ype of request.
+           .then((response)=>{
+            // we get JSON in response, which we can readily use 
+            response.json() // this method  actually returns another promise which  our transforms JSON data into a actual javascript object which we can use .
+             }) // we recieve that JSON  redirect property here as a response from the handler after all that deleting is done is nserver, using findByIdandDelete method.
+           // - and that redirect property is a URL, where we wanna go, and that will be done from front end, as this is an AJAX request and thus we can't do it in the server.
+           .then((data)=>{window.location.href = data.redirect;} )// accessing that JSON(jisme redirect property tha) turned JS object ka data.redirect and redirecting from the front end code by window.location method
+           .catch(err=>console.log(err));
+
+         })// this whole fetch block is an AJAX request. coz we did it from Javascript.
+        </script>
+    </body>
+</html>
